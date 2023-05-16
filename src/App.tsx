@@ -1,29 +1,46 @@
-import React, { useState } from 'react';
 import { Route, Redirect } from 'react-router-dom'
 
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonApp, IonLoading, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { AuthContext, useAuthInit } from './auth.context';
 
-import LoginPage from './pages/login-page.component';
+import LoginPage from './pages/login-page';
 import AppTabs from './App-tabs';
+import NotFoundPage from './pages/not-found-page';
+
+import RegisterPage from './pages/register-page';
+
 
 const App: React.FC = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  console.log(`rendering App with loggedIn=${loggedIn}`);
+  const { loading, auth } = useAuthInit();
+  
+  if (loading) {
+    return <IonLoading isOpen />;
+  }
+
+  console.log('rendering App with auth:', auth);
 
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path='/login'>
-            <LoginPage loggedIn={loggedIn} onLogin={() => setLoggedIn(true)} />
-          </Route>
-          <Route path='/my'>
-            <AppTabs loggedIn={loggedIn} />
-          </Route>
-          <Redirect exact path='/' to='/my/entries' />
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <AuthContext.Provider value={auth}>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path='/login'>
+              <LoginPage />
+            </Route>
+            <Route exact path='/register'>
+              <RegisterPage />
+            </Route>
+            <Route path='/my'>
+              <AppTabs />
+            </Route>
+            <Redirect exact path='/' to='/my/entries' />
+            <Route>
+              <NotFoundPage />
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </AuthContext.Provider>
     </IonApp>
   );
 };
