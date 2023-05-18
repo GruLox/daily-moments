@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "start": "ionic serve",
+    "start:android": "ionic capacitor run android --livereload",
     "build": "react-scripts build"
   },
   "dependencies": {
     "@capacitor/android": "4.6.1",
     "@capacitor/app": "4.1.1",
+    "@capacitor/camera": "^5.0.2",
     "@capacitor/core": "4.6.1",
     "@capacitor/haptics": "4.1.0",
     "@capacitor/ios": "^5.0.3",
@@ -25,7 +27,7 @@
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "4.6.1",
+    "@capacitor/cli": "^5.0.3",
     "@ionic/cli": "6.20.4",
     "@types/node": "^12.19.15",
     "@types/react": "^18.0.17",
